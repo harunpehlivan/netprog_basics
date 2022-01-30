@@ -23,9 +23,7 @@ def get_nodes(simulation):
 
 def stop_nodes(simulation, nodes): 
     u = simengine_host + "/simengine/rest/update/{}/stop?".format(simulation)
-    node_list = []
-    for node in nodes.keys():
-        node_list.append("nodes={}".format(node))
+    node_list = ["nodes={}".format(node) for node in nodes.keys()]
     node_list = "&".join(node_list)
     u += node_list
     r = requests.put(u, auth=(virl_user, virl_password))
@@ -33,9 +31,7 @@ def stop_nodes(simulation, nodes):
 
 def start_nodes(simulation, nodes): 
     u = simengine_host + "/simengine/rest/update/{}/start?".format(simulation)
-    node_list = []
-    for node in nodes.keys():
-        node_list.append("nodes={}".format(node))
+    node_list = ["nodes={}".format(node) for node in nodes.keys()]
     node_list = "&".join(node_list)
     u += node_list
     r = requests.put(u, auth=(virl_user, virl_password))
@@ -43,12 +39,9 @@ def start_nodes(simulation, nodes):
 
 def test_node_state(simulation, target_state, test_nodes=None):
     nodes = get_nodes(simulation)
-    if test_nodes == None: 
+    if test_nodes is None: 
         test_nodes = nodes
-    for node in test_nodes.keys(): 
-        if not nodes[node]["state"] == target_state:
-            return False
-    return True
+    return all(nodes[node]["state"] == target_state for node in test_nodes.keys())
 
 def get_node_console(simulation, node):
     node_key = "guest|{}|virl|{}".format(simulation, node)

@@ -66,7 +66,7 @@ def host_list(dnac, ticket, ip=None, mac=None, name=None):
         filters.append("hostMac={}".format(mac))
     if name:
         filters.append("hostName={}".format(name))
-    if len(filters) > 0:
+    if filters:
         url += "?" + "&".join(filters)
 
     # Make API request and return the response body
@@ -264,7 +264,7 @@ def run_flow_analysis(dnac, ticket, source_ip, destination_ip):
     flowAnalysisId = initiate_response.json()["response"]["flowAnalysisId"]
     detail_url = base_url + "/{}".format(flowAnalysisId)
     detail_response = requests.get(detail_url, headers=headers, verify=False)
-    while not detail_response.json()["response"]["request"]["status"] == "COMPLETED":  # noqa: E501
+    while detail_response.json()["response"]["request"]["status"] != "COMPLETED":  # noqa: E501
         print("Flow analysis not complete yet, waiting 5 seconds")
         sleep(5)
         detail_response = requests.get(detail_url, headers=headers,
@@ -289,7 +289,7 @@ def print_flow_analysis_details(flow_analysis):
     print("Flow Details: ")
     # Hop 1 (index 0) and the last hop (index len - 1) represent the endpoints
     for i, hop in enumerate(hops):
-        if i == 0 or i == len(hops) - 1:
+        if i in [0, len(hops) - 1]:
             continue
 
         print("*" * 40)

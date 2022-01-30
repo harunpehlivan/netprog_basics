@@ -13,6 +13,7 @@ Illustrate the following concepts:
 - Conditional statements
 """
 
+
 __author__ = "Hank Preston"
 __author_email__ = "hapresto@cisco.com"
 __copyright__ = "Copyright (c) 2016 Cisco Systems, Inc."
@@ -61,5 +62,3 @@ if __name__ == '__main__':
         message = ("There are now {} colors in the list. ".format(len(colors)))
         message += "The color you added was {}.".format(colors[3])
         print(message)
-    else: 
-        pass

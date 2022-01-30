@@ -26,8 +26,7 @@ def doubler(number):
     """
     Given a number, double it and return the value
     """
-    result = number * 2
-    return result
+    return number * 2
 
 
 # Entry point for program

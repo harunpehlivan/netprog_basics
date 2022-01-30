@@ -16,6 +16,7 @@ have SNMP available.  If you'd like to try this example, you
 can reserve the "IOS XE on CSR Recommended Code" Sandbox
 """
 
+
 from pysnmp.hlapi import *
 from pprint import pprint
 
@@ -35,10 +36,9 @@ errorIndication, errorStatus, errorIndex, varBinds = next(iterator)
 if errorIndication:  # SNMP engine errors
     print(errorIndication)
     print("Check to be sure you're connected to the VPN for the DevNet Sandbox.")
+elif errorStatus:  # SNMP agent errors
+    print('%s at %s' % (errorStatus.prettyPrint(),
+                        varBinds[int(errorIndex)-1] if errorIndex else '?'))
 else:
-    if errorStatus:  # SNMP agent errors
-        print('%s at %s' % (errorStatus.prettyPrint(),
-                            varBinds[int(errorIndex)-1] if errorIndex else '?'))
-    else:
-        for varBind in varBinds:  # SNMP response contents
-            print(' = '.join([x.prettyPrint() for x in varBind]))
+    for varBind in varBinds:  # SNMP response contents
+        print(' = '.join([x.prettyPrint() for x in varBind]))

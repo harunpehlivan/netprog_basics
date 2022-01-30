@@ -66,7 +66,7 @@ def host_list(apic, ticket, ip=None, mac=None, name=None):
         filters.append("hostMac={}".format(mac))
     if name:
         filters.append("hostName={}".format(name))
-    if len(filters) > 0:
+    if filters:
         url += "?" + "&".join(filters)
 
     # Make API request and return the response body
